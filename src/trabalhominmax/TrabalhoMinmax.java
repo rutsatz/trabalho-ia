@@ -5,6 +5,7 @@
  */
 package trabalhominmax;
 
+import agent.NovoAgente;
 import NineMensMorris.Game;
 import java.awt.EventQueue;
 
