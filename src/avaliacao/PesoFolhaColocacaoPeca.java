@@ -14,8 +14,8 @@ public class PesoFolhaColocacaoPeca {
     static int COL = 8;
     static int ROW = 3;
 
-    static int NUMEROINIMIGO = 2;
-    static int NUMEROAGENTE = 1;
+    public static int NUMEROINIMIGO = 2;
+    public static int NUMEROAGENTE = 1;
 
     static int PESOAGENTECANTO = 2;
     static int PESOAGENTECENTRO = 1;
