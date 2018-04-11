@@ -77,26 +77,75 @@ public class TreeGenerator {
         List<String> allowedMoves = Arrays.asList(new String[]{"0,0;0,7", "1,2;1,3", "2,0;2,7;2,1"});
 
         // Representa a quantidade de pecas que posso movimentar.
-        int pecasLivres = allowedMoves.size();
+//        int pecasLivres = allowedMoves.size();
 
+        int[][] nextState = gi;
+
+        TreeNode node = null;
         // Percorre todas as jogadas possiveis para cada peca.
-        for (int i = 0; i < pecasLivres; i++) {
-            String[] jogadasPeca = allowedMoves.get(i).split(";");
+//        for (int i = 0; i < pecasLivres; i++) {
+        for (int i = profundidade; i != 0; i--) {
+//            String[] jogadasPeca = allowedMoves.get(i).split(";");
 
-            TreeNode node;
+//            do {
+            oponente = !oponente; // Fica intercalando entre MIN e MAX.
 
-            do {
-                node = addLevel(gi, profundidade, !oponente);
+            try {
+                // Calcula a próxima jogada.
+                String proximaJogada = proximaJogada(nextState, oponente);
+
+                // Monta a matriz com a proxima jogada válida encontrada.
+                nextState = montarMatrizProximaJogada(nextState, oponente, proximaJogada);
+
+                node = addLevel(nextState, !oponente);
 
                 // Adiciona o nivel na lista.
-//                node.getChildren().add(node);
-            } while (node != null);
+                if (node != null) {
+                    node.getChildren().add(node);
+                }
+
+            } catch (JogadaException exception) {
+                exception.printStackTrace();
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+            // Percore enquanto houverem nós para adicionar e enquanto
+            // não atingir a profundidade máxima.
+//            } while (node != null && profundidade-- != 0);
 
             // Adiciona os filhos no elemento raiz.
 //            rootNode.getChildren().add(node);
         }
 
         return null;
+    }
+
+    /**
+     * Adiciona um novo nivel/
+     *
+     * @param gi
+     * @param profundidade
+     * @param oponente
+     * @return
+     */
+//    private TreeNode addLevel(int[][] nextState, int profundidade, boolean oponente) {
+    private TreeNode addLevel(int[][] nextState, boolean oponente) {
+
+//        TreeNode node = null;
+//        TreeData data = new TreeData(gi, oponente);
+        // Condição de parada.
+//        if (profundidade != 0) {
+        // Fica chamando a função até atingir a profundidade 0 (Limite).
+//                node = addLevel(nextState, profundidade - 1, !oponente);
+//                if (node != null) {
+//                    return node;
+//                }
+        TreeData data = new TreeData(nextState, !oponente);
+        TreeNode node = new TreeNode(data);
+        return node;
+
+//        }
+//        return null;
     }
 
     /**
@@ -164,7 +213,7 @@ public class TreeGenerator {
 
                 // Verifica se a joga encontrada é válida.
                 for (int j = 0; j < jogadasLivres.size(); j++) {
-//                    jogadaValida = gi.isSetAllowed(jogada);
+//                    jogadaValida = gi.isSetAllowed(jogada); @@
                     jogadaValida = true;
                     // Retorna a joga válida.
                     proximaJogadaValida = jogada;
@@ -182,44 +231,6 @@ public class TreeGenerator {
     }
 
     /**
-     * Adiciona um novo nivel/
-     *
-     * @param gi
-     * @param profundidade
-     * @param oponente
-     * @return
-     */
-    private TreeNode addLevel(int[][] gi, int profundidade, boolean oponente) {
-
-        TreeNode node = null;
-        
-//        TreeData data = new TreeData(gi, oponente);
-
-        // Condição de parada.
-        if (profundidade != 0) {
-
-            try {
-                // Calcula a próxima jogada.
-                String proximaJogada = proximaJogada(gi, !oponente);
-
-                // Monta a matriz com a proxima jogada válida encontrada.
-                int[][] nextState = montarMatrizProximaJogada(gi, !oponente, proximaJogada);
-                // Fica chamando a função até atingir a profundidade 0 (Limite).
-                node = addLevel(nextState, profundidade - 1, !oponente);
-                if (node != null) {
-                    return node;
-                }
-            } catch (JogadaException exception) {
-                exception.printStackTrace();
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * Adiciona a jogada calculada na matriz.
      *
      * @param gi
@@ -233,7 +244,12 @@ public class TreeGenerator {
 //        return gi;
 
         // Tratamento para a matriz. Ver como que faz com o GameInfo.
-        String[] coords = proximaJogada.split(",");
+        
+        String[] params = proximaJogada.split(";");
+        String posOrig = params[0]; // Posição de origem.
+        String posDest = params[1]; // Posição de destino.
+        
+        String[] coords = posDest.split(",");
         int x = Integer.parseInt(coords[0]);
         int y = Integer.parseInt(coords[1]);
 

@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public class TreeNode<TreeData> {
 
     private TreeData data;
 
-    private List<TreeNode<TreeData>> children;
+    private List<TreeNode<TreeData>> children = new ArrayList<>();
 
     public TreeNode(TreeData treeData) {
         setData(treeData);
