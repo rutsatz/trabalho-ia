@@ -5,8 +5,7 @@
  */
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  * Classe representando um nó da árvore.
@@ -18,7 +17,7 @@ public class TreeNode<TreeData> {
 
     private TreeData data;
 
-    private List<TreeNode<TreeData>> children = new ArrayList<>();
+    private LinkedList<TreeNode<TreeData>> children = new LinkedList<>();
 
     public TreeNode(TreeData treeData) {
         setData(treeData);
@@ -41,14 +40,14 @@ public class TreeNode<TreeData> {
     /**
      * @return the children
      */
-    public List<TreeNode<TreeData>> getChildren() {
+    public LinkedList<TreeNode<TreeData>> getChildren() {
         return children;
     }
 
     /**
      * @param children the children to set
      */
-    public void setChildren(List<TreeNode<TreeData>> children) {
+    public void setChildren(LinkedList<TreeNode<TreeData>> children) {
         this.children = children;
     }
 

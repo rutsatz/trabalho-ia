@@ -39,6 +39,13 @@ public class TreeData {
         setJogada(jogada);
     }
 
+    @Override
+    public String toString() {
+        return "TreeData{" + "jogada=" + jogada + ", gameInfo=" + gameInfo + ", oponente=" + oponente + '}';
+    }
+
+    
+    
     /**
      * @return the jogada
      */

@@ -11,6 +11,7 @@ import static avaliacao.PesoFolhaColocacaoPeca.NUMEROINIMIGO;
 import exception.JogadaException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import model.Tree;
 import model.Tree.Node;
@@ -55,6 +56,7 @@ public class TreeGenerator {
 //            oponente = false;
 //        }
         oponente = true; // Fixo para testes. @@
+        profundidade = 1;
         TreeNode[][] tree = gerarProfundidade(gi, profundidade, oponente);
     }
 
@@ -78,36 +80,89 @@ public class TreeGenerator {
 
         // Representa a quantidade de pecas que posso movimentar.
 //        int pecasLivres = allowedMoves.size();
-
         int[][] nextState = gi;
 
-        TreeNode node = null;
+        // Controla o nível em que estou.
+        int profundidadeAtual = profundidade;
+
+        // Lista que representa a árvore.
+        LinkedList<TreeNode> tree = new LinkedList<>();
+
+        tree.push(rootNode); // Adiciona o nó raiz na árvore.
+
+        // Verifica se atingiu o limite de jogadas.
+        boolean atingiuLimiteJogadas = false;
+
+        TreeNode lastNode = null;
+        // Nó atual.
+        TreeNode<TreeData> currentNode = tree.peek();
         // Percorre todas as jogadas possiveis para cada peca.
 //        for (int i = 0; i < pecasLivres; i++) {
-        for (int i = profundidade; i != 0; i--) {
+//        for (int i = profundidade; i != 0; i--) {
+        while (!atingiuLimiteJogadas || profundidadeAtual != profundidade) {
 //            String[] jogadasPeca = allowedMoves.get(i).split(";");
 
 //            do {
-            oponente = !oponente; // Fica intercalando entre MIN e MAX.
+            // Verifica se atingiu o limite de profundidade e precisa subir.
+            if (profundidadeAtual == 0 || atingiuLimiteJogadas) {
 
-            try {
-                // Calcula a próxima jogada.
-                String proximaJogada = proximaJogada(nextState, oponente);
+                currentNode = lastNode;
 
-                // Monta a matriz com a proxima jogada válida encontrada.
-                nextState = montarMatrizProximaJogada(nextState, oponente, proximaJogada);
+                profundidadeAtual++;
+                atingiuLimiteJogadas = false;
 
-                node = addLevel(nextState, !oponente);
+//                nextState = ((TreeData) ((TreeNode) currentNode.getChildren().peek()).getData()).getGameInfo();
 
-                // Adiciona o nivel na lista.
-                if (node != null) {
-                    node.getChildren().add(node);
+                // Pega ultimo estado do nó pai.
+                nextState = ((TreeData) lastNode.getData()).getGameInfo();
+
+            } else {
+                // Desce um nível.
+                try {
+
+                    oponente = !oponente; // Fica intercalando entre MIN e MAX.
+
+                    // Calcula a próxima jogada.
+                    String proximaJogada = proximaJogada(nextState, oponente);
+
+                    // Monta a matriz com a proxima jogada válida encontrada.
+                    nextState = montarMatrizProximaJogada(nextState, oponente, proximaJogada);
+
+                    int qtdJogadas = profundidadeAtual - 1;
+                    System.out.println(qtdJogadas);
+                    // @@
+//                    int qtdJogadas = 0;
+//                    if (oponente) {
+//                        qtdJogadas = nextState.getOpponentAllowedMoves().size();
+//                    } else {
+//                        qtdJogadas = nextState.getAllowedMoves().size();
+//                    }
+                    if (qtdJogadas == 0) {
+                        atingiuLimiteJogadas = true;
+                    }
+
+                    // Cria o novo nível.
+                    TreeNode newNode = addLevel(nextState, !oponente);
+
+                    // Adiciona o nivel na lista.
+//                    if (newNode != null) {
+                    currentNode.getChildren().push(newNode);
+//                    }
+
+//                    currentNode.getData().setGameInfo(gi);
+
+                    // Atualiza o ponteiro do nó anterior.
+                    lastNode = currentNode;
+                    // Atualiza o ponteiro para o novo nó.
+                    currentNode = newNode;
+                    // Atualiza o nível.
+                    profundidadeAtual--;
+                } catch (JogadaException exception) {
+                    exception.printStackTrace();
+                } catch (Exception exception) {
+                    exception.printStackTrace();
                 }
 
-            } catch (JogadaException exception) {
-                exception.printStackTrace();
-            } catch (Exception exception) {
-                exception.printStackTrace();
             }
             // Percore enquanto houverem nós para adicionar e enquanto
             // não atingir a profundidade máxima.
@@ -116,6 +171,8 @@ public class TreeGenerator {
             // Adiciona os filhos no elemento raiz.
 //            rootNode.getChildren().add(node);
         }
+
+        System.out.println(tree);
 
         return null;
     }
@@ -159,70 +216,73 @@ public class TreeGenerator {
 
         String proximaJogadaValida = null;
 
-        if (oponente) {
+        List<String> moves = null;
 
+        if (oponente) {
             // Adicionar if. @@
             // Se existem pecas pendentes de serem colocadas, pegar emptySpots.
             // Senao, pegar allowedMoves.
 //            List<String> opponentAllowedMoves = gi.getOpponentAllowedMoves();
-            List<String> opponentAllowedMoves = Arrays.asList(new String[]{"0,5;0,6", "0,6;0,5;0,7", "2,3;1,3"});
-            boolean jogadaValida = false;
+            moves = Arrays.asList(new String[]{"0,5;0,6", "0,6;0,5;0,7", "2,3;1,3"});
+        } else {
+            moves = Arrays.asList(new String[]{"0,3;1,3", "1,2;1,3", "0,4;0,5"});
+        }
+        boolean jogadaValida = false;
 
-            // Procura uma jogada disponível dentre todas as posições do tabuleiro.
-            for (int i = 0; i < opponentAllowedMoves.size() && !jogadaValida; i++) {
+        // Procura uma jogada disponível dentre todas as posições do tabuleiro.
+        for (int i = 0; i < moves.size() && !jogadaValida; i++) {
 //                String jogada = opponentAllowedMoves.get(i);
 
 //                Percorre as pecas livres, que permitem alguma jogada valida.
 //                List<String> pecasLivres = gi.getAllowedMoves(jogada);
-                List<String> pecasLivres = Arrays.asList(new String[]{"0,6;0,5;0,7;1,3"});
+            List<String> pecasLivres = Arrays.asList(new String[]{"0,6;0,5;0,7;1,3"});
 
-                // Verifica se a joga encontrada é válida.
-                for (int j = 0; j < pecasLivres.size(); j++) {
+            // Verifica se a joga encontrada é válida.
+            for (int j = 0; j < pecasLivres.size(); j++) {
 
-                    String[] jogadas = pecasLivres.get(j).split(";");
+                String[] jogadas = pecasLivres.get(j).split(";");
 
-                    // Para cada peca livre, percorre as jogadas possiveis.
-                    // O elemento 0 contem a posicao da peca.
-                    for (int k = 1; k < jogadas.length; k++) {
+                // Para cada peca livre, percorre as jogadas possiveis.
+                // O elemento 0 contem a posicao da peca.
+                for (int k = 1; k < jogadas.length; k++) {
 //                         jogadaValida = gi.isSetAllowed(jogadas[k]);
-                        jogadaValida = true;
-                        if (jogadaValida) {
+                    jogadaValida = true;
+                    if (jogadaValida) {
 //                    Retorna a jogada válida.
-                            proximaJogadaValida = jogadas[k];
-                            return proximaJogadaValida;
-                        }
+// Posição origem mais posição destino.
+                        proximaJogadaValida = jogadas[0] + ";" + jogadas[k];
+                        return proximaJogadaValida;
                     }
                 }
-
-            }
-
-        } else {
-
-            // Adicionar if. @@
-            // Se existem pecas pendentes de serem colocadas, pegar emptySpots.
-            // Senao, pegar allowedMoves.
-//            List<String> allowedMoves = gi.getAllowedMoves();
-            List<String> allowedMoves = Arrays.asList(new String[]{"0,3;1,3", "1,2;1,3", "0,4;0,5"});
-            boolean jogadaValida = false;
-
-            // Procura uma jogada disponível dentre todas as posições do tabuleiro.
-            for (int i = 0; i < allowedMoves.size() && !jogadaValida; i++) {
-                String jogada = allowedMoves.get(i);
-//                List<String> jogadasLivres = gi.getAllowedMoves(jogada);
-                List<String> jogadasLivres = Arrays.asList(new String[]{"0,3;1,3"});
-
-                // Verifica se a joga encontrada é válida.
-                for (int j = 0; j < jogadasLivres.size(); j++) {
-//                    jogadaValida = gi.isSetAllowed(jogada); @@
-                    jogadaValida = true;
-                    // Retorna a joga válida.
-                    proximaJogadaValida = jogada;
-                }
-
             }
 
         }
+//        } else {
 
+//            // Adicionar if. @@
+//            // Se existem pecas pendentes de serem colocadas, pegar emptySpots.
+//            // Senao, pegar allowedMoves.
+////            List<String> allowedMoves = gi.getAllowedMoves();
+//            List<String> allowedMoves = Arrays.asList(new String[]{"0,3;1,3", "1,2;1,3", "0,4;0,5"});
+//            boolean jogadaValida = false;
+//
+//            // Procura uma jogada disponível dentre todas as posições do tabuleiro.
+//            for (int i = 0; i < allowedMoves.size() && !jogadaValida; i++) {
+//                String jogada = allowedMoves.get(i);
+////                List<String> jogadasLivres = gi.getAllowedMoves(jogada);
+//                List<String> jogadasLivres = Arrays.asList(new String[]{"0,3;1,3"});
+//
+//                // Verifica se a joga encontrada é válida.
+//                for (int j = 0; j < jogadasLivres.size(); j++) {
+////                    jogadaValida = gi.isSetAllowed(jogada); @@
+//                    jogadaValida = true;
+//                    // Retorna a joga válida.
+//                    proximaJogadaValida = jogada;
+//                }
+//
+//            }
+//
+//        }
         if (proximaJogadaValida == null) {
             throw new JogadaException("Erro. Nenhuma jogada válida encontrada.");
         }
@@ -244,11 +304,10 @@ public class TreeGenerator {
 //        return gi;
 
         // Tratamento para a matriz. Ver como que faz com o GameInfo.
-        
         String[] params = proximaJogada.split(";");
         String posOrig = params[0]; // Posição de origem.
         String posDest = params[1]; // Posição de destino.
-        
+
         String[] coords = posDest.split(",");
         int x = Integer.parseInt(coords[0]);
         int y = Integer.parseInt(coords[1]);
