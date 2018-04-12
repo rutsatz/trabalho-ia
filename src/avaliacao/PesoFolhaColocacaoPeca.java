@@ -17,11 +17,11 @@ public class PesoFolhaColocacaoPeca {
     public static int NUMEROINIMIGO = 2;
     public static int NUMEROAGENTE = 1;
 
-    static int PESOAGENTECANTO = 5;
-    static int PESOAGENTECENTRO = 7;
+    static int PESOAGENTECANTO = 6;
+    static int PESOAGENTECENTRO = 8;
 
-    static int PESOINIMIGOCANTO = 5;
-    static int PESOINIMIGOCENTRO = 7;
+    static int PESOINIMIGOCANTO = 6;
+    static int PESOINIMIGOCENTRO = 8;
 
     public static int avalia(int[][] multi) {
 
