@@ -62,5 +62,4 @@ public class DummyAgent implements PlayerAgent {
 
         return move;
     }
-
 }
