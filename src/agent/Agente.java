@@ -52,36 +52,34 @@ public class Agente implements PlayerAgent {
     }
 
     public int calcularProfundidade(GameInfo info) {
-        int totalPecasOponente = info.getOpponentSpots().size();
-        int totalPecasAgente = info.getPlayerSpots().size();
+        int movimentosPermitidos = info.getAllowedMoves().size() + info.getOpponentAllowedMoves().size();
 
         boolean colocacaoPesas = info.getPiecesToPlace() == 0 ? false : true;
-        int totalPecas = totalPecasOponente + totalPecasAgente;
-
+        
         if (colocacaoPesas) {
-
-            if (totalPecas > 15) {
-                return 7;
+            if (movimentosPermitidos < 10) {
+                return 4;
             }
-            if (totalPecas > 10) {
+            if (movimentosPermitidos < 15) {
                 return 5;
             }
-            if (totalPecas < 5) {
-                return 3;
+            if (movimentosPermitidos < 20) {
+                return 6;
             }
-
         } else {
-            if (totalPecas > 15) {
-                return 3;
+            if (movimentosPermitidos < 5) {
+                return 7;
             }
-            if (totalPecas > 10) {
+            if (movimentosPermitidos < 10) {
+                return 6;
+            }
+            if (movimentosPermitidos < 15) {
                 return 5;
             }
-            if (totalPecas < 5) {
-                return 7;
+            if (movimentosPermitidos < 20) {
+                return 4;
             }
         }
-
         return 3;
     }
 }
