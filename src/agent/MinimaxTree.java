@@ -182,6 +182,11 @@ public abstract class MinimaxTree {
                     // adiciona nodo como filho do nodo anterior
                     node.addChild( child );
 
+                    int childAction = (( child.playerTurn == MAX_TURN && child.piecesToPlace > 0 ) ||
+                                    ( child.playerTurn == MIN_TURN && child.opponentePiecesToPlace > 0 ))
+                                        ? SET_ACTION
+                                        : MOVE_ACTION;
+                    
                     // caso algum dos jogadores esteja com menos de 3 peças então considera fim do jogo e calcula pontuação do nodo folha
                     if ( gameInfo.getPlayerSpots( newStateRemove ).size() < 3 ||
                          gameInfo.getOpponentSpots( newStateRemove ).size() < 3 )
@@ -192,7 +197,7 @@ public abstract class MinimaxTree {
                     // caso não tenha alcançado a profundidade estipulada então gera nós filhos
                     else if ( child.level < depth)
                     {                    
-                        generateChildren( child, MOVE_ACTION );
+                        generateChildren( child, childAction );
                     }
                     // profundidade estipulada atingida, nesse caso calcula pontuação do nó folha
                     else
