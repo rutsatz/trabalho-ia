@@ -52,34 +52,34 @@ public class Agente implements PlayerAgent {
     }
 
     public int calcularProfundidade(GameInfo info) {
-        int movimentosPermitidos = info.getAllowedMoves().size() + info.getOpponentAllowedMoves().size();
-
-        boolean colocacaoPesas = info.getPiecesToPlace() == 0 ? false : true;
-        
-        if (colocacaoPesas) {
-            if (movimentosPermitidos < 10) {
-                return 4;
-            }
-            if (movimentosPermitidos < 15) {
-                return 5;
-            }
-            if (movimentosPermitidos < 20) {
-                return 6;
-            }
-        } else {
-            if (movimentosPermitidos < 5) {
-                return 7;
-            }
-            if (movimentosPermitidos < 10) {
-                return 6;
-            }
-            if (movimentosPermitidos < 15) {
-                return 5;
-            }
-            if (movimentosPermitidos < 20) {
-                return 4;
-            }
-        }
+//        int movimentosPermitidos = info.getAllowedMoves().size() + info.getOpponentAllowedMoves().size();
+//
+//        boolean colocacaoPesas = info.getPiecesToPlace() == 0 ? false : true;
+//        
+//        if (colocacaoPesas) {
+//            if (movimentosPermitidos < 10) {
+//                return 4;
+//            }
+//            if (movimentosPermitidos < 15) {
+//                return 5;
+//            }
+//            if (movimentosPermitidos < 20) {
+//                return 6;
+//            }
+//        } else {
+//            if (movimentosPermitidos < 5) {
+//                return 7;
+//            }
+//            if (movimentosPermitidos < 10) {
+//                return 6;
+//            }
+//            if (movimentosPermitidos < 15) {
+//                return 5;
+//            }
+//            if (movimentosPermitidos < 20) {
+//                return 4;
+//            }
+//        }
         return 3;
     }
 }

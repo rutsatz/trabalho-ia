@@ -53,7 +53,7 @@ public class PesoFolhaColocacaoPeca {
                     }
                 }
                 result += pontosRodada;
-            }
+        }
         }
         return result;
     }
