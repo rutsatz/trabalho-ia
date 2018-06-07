@@ -3,7 +3,11 @@ package agent;
 import NineMensMorris.GameInfo;
 import agent.MinimaxTree;
 import NineMensMorris.PlayerAgent;
+import avaliacao.FuncaoAvaliacao;
 import avaliacao.PesoFolhaColocacaoPeca;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import trabalhominmax.TrabalhoMinmax;
 
 public class Agente implements PlayerAgent {
 
@@ -19,6 +23,11 @@ public class Agente implements PlayerAgent {
             }
         };
 
+        try {
+            Thread.sleep(TrabalhoMinmax.DELAY_ENTRE_CADA_JOGADA);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
         return tree.executeMinimax();
     }
 
@@ -31,6 +40,11 @@ public class Agente implements PlayerAgent {
             }
         };
 
+        try {
+            Thread.sleep(TrabalhoMinmax.DELAY_ENTRE_CADA_JOGADA);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
         return tree.executeMinimax();
     }
 
@@ -43,6 +57,11 @@ public class Agente implements PlayerAgent {
             }
         };
 
+        try {
+            Thread.sleep(TrabalhoMinmax.DELAY_ENTRE_CADA_JOGADA);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
         return tree.executeMinimax();
     }
 

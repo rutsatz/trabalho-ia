@@ -8,6 +8,9 @@ package agent;
 import NineMensMorris.GameInfo;
 import NineMensMorris.PlayerAgent;
 import avaliacao.FuncaoAvaliacao;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import trabalhominmax.TrabalhoMinmax;
 
 /**
  *
@@ -25,6 +28,12 @@ public class Agente2 implements PlayerAgent {
                 return score(info, node);
             }
         };
+        
+        try {
+            Thread.sleep(TrabalhoMinmax.DELAY_ENTRE_CADA_JOGADA);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
 
         return tree.executeMinimax();
     }
@@ -37,6 +46,12 @@ public class Agente2 implements PlayerAgent {
                 return score(info, node);
             }
         };
+        
+        try {
+            Thread.sleep(TrabalhoMinmax.DELAY_ENTRE_CADA_JOGADA);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
 
         return tree.executeMinimax();
     }
@@ -50,6 +65,11 @@ public class Agente2 implements PlayerAgent {
             }
         };
 
+        try {
+            Thread.sleep(TrabalhoMinmax.DELAY_ENTRE_CADA_JOGADA);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
         return tree.executeMinimax();
     }
 

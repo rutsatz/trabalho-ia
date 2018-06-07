@@ -16,6 +16,9 @@ public class FuncaoAvaliacao {
     public static final int NENHUMA_PECA = 0;
     public static final int AGENTE = 1;
     public static final int ADVERSARIO = 2;
+    
+    public static final int PESO_HORIZONTAL = 2;
+    public static final int PESO_VERTICAL = 2;
 
     public static int avaliar(int[][] multi) {
 
@@ -27,32 +30,25 @@ public class FuncaoAvaliacao {
                 int pecaAtual = multi[x][y];
                 int movimentoHorario = multi[x][y + 1 > 7 ? 0 : y + 1];
                 int movimentoAntiHorario = multi[x][y - 1 < 0 ? 7 : y - 1];
-                int movimentoHorario2;
-                int movimentoAntiHorario2;
-                
-                if (y + 2 == 8) {
-                    movimentoHorario2 = multi[x][0];
-                } else if (y + 2 == 9) {
-                    movimentoHorario2 = multi[x][1];
-                } else {
-                    movimentoHorario2 = multi[x][y + 2];
-                }
-                
-                if (y - 2 == -1) {
-                    movimentoAntiHorario2 = multi[x][0];
-                } else if (y - 2 == -2) {
-                    movimentoAntiHorario2 = multi[x][1];
-                } else {
-                    movimentoAntiHorario2 = multi[x][y - 2];
-                }
-                
+
                 int acessarNovoAndar = -1;
                 int recuarAndar = -1;
                 
                 if (y % 2 != 0) {
-                    acessarNovoAndar = multi[x + 1 > 2 ? 2 : x + 1][y];
-                    recuarAndar = multi[x - 1 < 0 ? 0 : x - 1][y];
+                    if (x + 1 <= 2) {
+                        acessarNovoAndar = multi[x + 1][y];
+                    }
+                    if (x - 1 >= 0) {
+                        acessarNovoAndar = multi[x - 1][y];
+                    }
                 }
+                
+                if (pecaAtual == ADVERSARIO) {
+                    result -= calcularPontuacaoJogadasHorizontais(y);
+                } else if (pecaAtual == AGENTE) {
+                    result += calcularPontuacaoJogadasHorizontais(y);
+                }
+                
                 
                 if (movimentoHorario == ADVERSARIO) {
                     result -= calcularPontuacaoJogadasHorizontais(y);
@@ -64,25 +60,16 @@ public class FuncaoAvaliacao {
                 } else if (movimentoAntiHorario == AGENTE) {
                     result += calcularPontuacaoJogadasHorizontais(y);
                 }
-                if (movimentoHorario2 == ADVERSARIO) {
-                    result -= calcularPontuacaoJogadasHorizontais(y);
-                } else if (movimentoHorario2 == AGENTE) {
-                    result += calcularPontuacaoJogadasHorizontais(y);
-                }
-                if (movimentoAntiHorario2 == ADVERSARIO) {
-                    result -= calcularPontuacaoJogadasHorizontais(y);
-                } else if (movimentoAntiHorario2 == AGENTE) {
-                    result += calcularPontuacaoJogadasHorizontais(y);
-                }
+
                 if (acessarNovoAndar == ADVERSARIO) {
-                    result -= 2;
+                    result -= PESO_VERTICAL;
                 } else if (acessarNovoAndar == AGENTE) {
-                    result += 2;
+                    result += PESO_VERTICAL;
                 }
                 if (recuarAndar == ADVERSARIO) {
-                    result -= 2;
+                    result -= PESO_VERTICAL;
                 } else if (recuarAndar == AGENTE) {
-                    result += 2;
+                    result += PESO_VERTICAL;
                 }
             }
         }
@@ -91,7 +78,7 @@ public class FuncaoAvaliacao {
     
     private static int calcularPontuacaoJogadasHorizontais(int y) {
         
-        int result = 3;
+        int result = PESO_HORIZONTAL;
         
         int coordenadaYPecaAtual = y;
         int coordenadaYMovimentoHorario = y + 1 > 7 ? 0 : y + 1;

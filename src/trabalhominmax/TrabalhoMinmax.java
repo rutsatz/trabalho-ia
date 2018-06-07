@@ -15,6 +15,8 @@ import java.awt.EventQueue;
  * @author m72887
  */
 public class TrabalhoMinmax {
+    
+    public static int DELAY_ENTRE_CADA_JOGADA = 100;
 
     /**
      * @param args the command line arguments
