@@ -3,6 +3,7 @@ package agent;
 import NineMensMorris.GameInfo;
 import agent.MinimaxTree;
 import NineMensMorris.PlayerAgent;
+import avaliacao.Folha;
 import avaliacao.FuncaoAvaliacao;
 import avaliacao.PesoFolhaColocacaoPeca;
 import java.util.logging.Level;
@@ -12,7 +13,12 @@ import trabalhominmax.TrabalhoMinmax;
 public class Agente implements PlayerAgent {
 
     public static final int PROFUNDIDADE = 5;
+    public static PesoFolhaColocacaoPeca pesoFolhaColocacaoPeca = new PesoFolhaColocacaoPeca();
+    
 
+    public static Folha folha = new Folha();
+    
+    
     @Override
     public String setPiece(GameInfo info) {
 
@@ -67,7 +73,9 @@ public class Agente implements PlayerAgent {
 
     //private int score( GameInfo info, int[][] gameState, int playerTurn, int piecesToPlace, int opponentPiecesToPlace )
     private int score(GameInfo info, MinimaxTree.Node node) {
-        return PesoFolhaColocacaoPeca.avalia(node.getGameState());
+        boolean colocacaoPesas = info.getPiecesToPlace() == 0 ? false : true;
+        folha = pesoFolhaColocacaoPeca.avalia(node.getGameState(), colocacaoPesas, folha.getAgente(), folha.getInimigo());
+        return folha.getResult();
     }
 
     public int calcularProfundidade(GameInfo info) {
@@ -99,6 +107,6 @@ public class Agente implements PlayerAgent {
 //                return 4;
 //            }
 //        }
-        return 3;
+        return 4;
     }
 }

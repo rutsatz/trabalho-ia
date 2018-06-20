@@ -111,6 +111,6 @@ public class Agente2 implements PlayerAgent {
 //                return 4;
 //            }
 //        }
-        return 3;
+        return 4;
     }
 }
