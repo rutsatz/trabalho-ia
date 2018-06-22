@@ -2,6 +2,8 @@ package agent;
 
 import NineMensMorris.GameInfo;
 import NineMensMorris.PlayerAgent;
+import static agent.Agente.folha;
+import static agent.Agente.pesoFolhaColocacaoPeca;
 import avaliacao.FuncaoAvaliacao;
 import trabalhominmax.TrabalhoMinmax;
 
@@ -9,7 +11,7 @@ import trabalhominmax.TrabalhoMinmax;
  *
  * @author will
  */
-public class AvaliacaoDePecasProximas implements PlayerAgent {
+public class QuantidadeDePecas implements PlayerAgent {
 
     public static final int PROFUNDIDADE = 5;
 
@@ -68,7 +70,7 @@ public class AvaliacaoDePecasProximas implements PlayerAgent {
     }
 
     private int score(GameInfo info, MinimaxTree.Node node) {
-        return FuncaoAvaliacao.avaliar(node.getGameState());
+        return FuncaoAvaliacao.avaliaPeloNumeroDePecas(node.getGameState());
     }
 
     public int calcularProfundidade(GameInfo info) {

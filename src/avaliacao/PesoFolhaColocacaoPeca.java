@@ -62,7 +62,6 @@ public class PesoFolhaColocacaoPeca {
 
         int result = 0;
         int pontosRodada;
-
         for (int j = 0; j < ROW; j++) {
 
             for (int k = 0; k < COL; k++) {
@@ -72,10 +71,8 @@ public class PesoFolhaColocacaoPeca {
                     result -= VALORPECA + 1;
                 }
             }
-
+          
             for (int i = 0; i < COL - 1; i = i + 2) {
-                pontosRodada = 0;
-
                 pontosRodada = calculoPontuacao(
                         multi[j][i],
                         multi[j][i + 1],
@@ -126,7 +123,6 @@ public class PesoFolhaColocacaoPeca {
     }
 
     private static int calculoPontuacao(int v1, int v2, int v3, int id) {
-//        System.out.println(v1 + " " + v2 + " " + v3);
         int pontos = 0;
 
         if (v1 == v2 && v2 == v3) {

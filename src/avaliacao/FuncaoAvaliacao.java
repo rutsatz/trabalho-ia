@@ -44,6 +44,12 @@ public class FuncaoAvaliacao {
                 }
                 
                 if (pecaAtual == ADVERSARIO) {
+                    result -= 40;
+                } else if (pecaAtual == AGENTE) {
+                    result += 40;
+                }
+                
+                if (pecaAtual == ADVERSARIO) {
                     result -= calcularPontuacaoJogadasHorizontais(y);
                 } else if (pecaAtual == AGENTE) {
                     result += calcularPontuacaoJogadasHorizontais(y);
@@ -113,5 +119,24 @@ public class FuncaoAvaliacao {
         
         return result;
 //        return 1;
+    }
+    
+    public static int avaliaPeloNumeroDePecas(int[][] multi) {
+
+        int result = 0;
+
+        for (int x = 0; x < multi.length; x++) {
+            for (int y = 0; y < multi[0].length; y++) {
+                
+                int pecaAtual = multi[x][y];
+                
+                if (pecaAtual == ADVERSARIO) {
+                    result -= 2;
+                } else if (pecaAtual == AGENTE) {
+                    result += 2;
+                }
+            }
+        }
+        return result;
     }
 }
