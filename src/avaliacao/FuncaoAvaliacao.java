@@ -44,12 +44,6 @@ public class FuncaoAvaliacao {
                 }
                 
                 if (pecaAtual == ADVERSARIO) {
-                    result -= 40;
-                } else if (pecaAtual == AGENTE) {
-                    result += 40;
-                }
-                
-                if (pecaAtual == ADVERSARIO) {
                     result -= calcularPontuacaoJogadasHorizontais(y);
                 } else if (pecaAtual == AGENTE) {
                     result += calcularPontuacaoJogadasHorizontais(y);

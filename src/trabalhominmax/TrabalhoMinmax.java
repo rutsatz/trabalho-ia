@@ -10,6 +10,7 @@ import agent.Agente;
 import agent.QuantidadeDePecas;
 import agent.AgenteAlfa;
 import agent.AvaliacaoDePecasProximas;
+import agent.FuncaoHibrida;
 import java.awt.EventQueue;
 
 /**
@@ -18,7 +19,7 @@ import java.awt.EventQueue;
  */
 public class TrabalhoMinmax {
     
-    public static int DELAY_ENTRE_CADA_JOGADA = 100;
+    public static int DELAY_ENTRE_CADA_JOGADA = 0;
 
     /**
      * @param args the command line arguments
@@ -33,6 +34,7 @@ public class TrabalhoMinmax {
                 moinho.addAgent(new AgenteAlfa());
                 moinho.addAgent(new AvaliacaoDePecasProximas());
                 moinho.addAgent(new QuantidadeDePecas());
+                moinho.addAgent(new FuncaoHibrida());
             }
         });
     }
