@@ -72,6 +72,6 @@ public class AvaliacaoDePecasProximas implements PlayerAgent {
     }
 
     public int calcularProfundidade(GameInfo info) {
-        return 4;
+        return 3;
     }
 }
