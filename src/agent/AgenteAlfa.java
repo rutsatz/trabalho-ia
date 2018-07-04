@@ -2,21 +2,29 @@ package agent;
 
 import NineMensMorris.GameInfo;
 import NineMensMorris.PlayerAgent;
-import avaliacao.AvaliacaoAlfa;
+import static agent.Agente.folha;
+import static agent.Agente.pesoFolhaColocacaoPeca;
+import avaliacao.FuncaoAvaliacao;
 import trabalhominmax.TrabalhoMinmax;
 
 public class AgenteAlfa implements PlayerAgent {
 
     @Override
     public String setPiece(GameInfo info) {
-        int profundidade = 3;
-        //int quantidadePecasColocar = info.getPiecesToPlace();
-        int quantidadeLugaresLivres = info.getEmptySpots().size();
+        Integer profundidade = 3;
+        Integer quantidadeLugaresLivres = info.getEmptySpots().size();
 
-        if (quantidadeLugaresLivres <= 5) {
-            profundidade += quantidadeLugaresLivres;
+        if (quantidadeLugaresLivres <= 10) {
+            profundidade++;
         }
 
+        if (quantidadeLugaresLivres <= 16) {
+            profundidade++;
+        }
+
+        if (quantidadeLugaresLivres <= 20) {
+            profundidade++;
+        }
         MinimaxTree tree = new MinimaxTree(profundidade, MinimaxTree.SET_ACTION, info) {
             @Override
             public int scoreGameState(MinimaxTree.Node node) {
@@ -29,43 +37,18 @@ public class AgenteAlfa implements PlayerAgent {
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
+
         return tree.executeMinimax();
     }
 
     @Override
     public String movePiece(GameInfo info) {
-        int profundidade = 3;
-        int quantidadeMovimentosPermitidos = info.getAllowedMoves().size();
-        switch (quantidadeMovimentosPermitidos) {
-            case 9:
-                break;
-            case 8:
-                break;
-            case 7:
-                break;
-            case 6:
-                profundidade += 1;
-                break;
-            case 5:
-                profundidade += 1;
-                break;
-            case 4:
-                profundidade += 2;
-                break;
-            case 3:
-                profundidade += 3;
-                break;
-            case 2:
-                profundidade += 4;
-                break;
-            case 1:
-                profundidade += 5;
-                break;
-            default:
-                break;
+        Integer profundidade = 3;
+        Integer quantidadeMovimentosPermitidos = info.getPlayerSpots().size();
 
+        if (quantidadeMovimentosPermitidos > 3) {
+            profundidade++;
         }
-
         MinimaxTree tree = new MinimaxTree(profundidade, MinimaxTree.MOVE_ACTION, info) {
             @Override
             public int scoreGameState(MinimaxTree.Node node) {
@@ -78,43 +61,13 @@ public class AgenteAlfa implements PlayerAgent {
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
+
         return tree.executeMinimax();
     }
 
     @Override
     public String removePiece(GameInfo info) {
-        int profundidade = 5;
-        int quantidadePecasRemover = info.getAllowedRemoves().size();
-        
-        switch (quantidadePecasRemover) {
-            case 9:
-                break;
-            case 8:
-                break;
-            case 7:
-                break;
-            case 6:
-                profundidade += 1;
-                break;
-            case 5:
-                profundidade += 1;
-                break;
-            case 4:
-                profundidade += 2;
-                break;
-            case 3:
-                profundidade += 3;
-                break;
-            case 2:
-                profundidade += 4;
-                break;
-            case 1:
-                profundidade += 5;
-                break;
-            default:
-                break;
-        }
-
+        Integer profundidade = 4;
         MinimaxTree tree = new MinimaxTree(profundidade, MinimaxTree.REMOVE_ACTION, info) {
             @Override
             public int scoreGameState(MinimaxTree.Node node) {
@@ -131,6 +84,17 @@ public class AgenteAlfa implements PlayerAgent {
     }
 
     private int score(GameInfo info, MinimaxTree.Node node) {
-        return AvaliacaoAlfa.avalia(info);
+
+        boolean colocacaoPecas = info.getPiecesToPlace() == 0 ? false : true;
+        if (colocacaoPecas) {
+            folha = pesoFolhaColocacaoPeca.avalia(node.getGameState(), colocacaoPecas, folha.getAgente(), folha.getInimigo());
+            return folha.getResult();
+        }
+
+        if (info.getOpponentSpots().size() == info.getPlayerSpots().size()) {
+            return FuncaoAvaliacao.avaliar(node.getGameState());
+        } else {
+            return FuncaoAvaliacao.avaliaPeloNumeroDePecas(node.getGameState());
+        }
     }
 }
