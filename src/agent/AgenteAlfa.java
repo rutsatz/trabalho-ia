@@ -2,12 +2,16 @@ package agent;
 
 import NineMensMorris.GameInfo;
 import NineMensMorris.PlayerAgent;
-import static agent.Agente.folha;
-import static agent.Agente.pesoFolhaColocacaoPeca;
+import avaliacao.AvaliaPeloNumeroDePecas;
+import avaliacao.Folha;
 import avaliacao.FuncaoAvaliacao;
+import avaliacao.PesoFolhaColocacaoPeca;
 import trabalhominmax.TrabalhoMinmax;
 
 public class AgenteAlfa implements PlayerAgent {
+    
+    public static PesoFolhaColocacaoPeca pesoFolhaColocacaoPeca = new PesoFolhaColocacaoPeca();
+    public static Folha folha = new Folha();
 
     @Override
     public String setPiece(GameInfo info) {
@@ -94,7 +98,7 @@ public class AgenteAlfa implements PlayerAgent {
         if (info.getOpponentSpots().size() == info.getPlayerSpots().size()) {
             return FuncaoAvaliacao.avaliar(node.getGameState());
         } else {
-            return FuncaoAvaliacao.avaliaPeloNumeroDePecas(node.getGameState());
+            return AvaliaPeloNumeroDePecas.avaliaPeloNumeroDePecas(node.getGameState());
         }
     }
 }
