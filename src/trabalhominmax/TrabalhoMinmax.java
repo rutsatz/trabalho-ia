@@ -7,10 +7,7 @@ package trabalhominmax;
 
 import NineMensMorris.Game;
 import agent.Agente;
-import agent.QuantidadeDePecas;
 import agent.AgenteAlfa;
-import agent.AvaliacaoDePecasProximas;
-import agent.FuncaoHibrida;
 import java.awt.EventQueue;
 
 /**
@@ -32,9 +29,6 @@ public class TrabalhoMinmax {
                 moinho.setVisible(true);
                 moinho.addAgent(new Agente());
                 moinho.addAgent(new AgenteAlfa());
-                moinho.addAgent(new AvaliacaoDePecasProximas());
-                moinho.addAgent(new QuantidadeDePecas());
-                moinho.addAgent(new FuncaoHibrida());
             }
         });
     }
