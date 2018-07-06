@@ -7,6 +7,7 @@ package trabalhominmax;
 
 import NineMensMorris.Game;
 import agent.AgenteAlfa;
+import anotheragent.FabioAgente;
 import java.awt.EventQueue;
 
 /**
@@ -26,6 +27,7 @@ public class TrabalhoMinmax {
             public void run() {
                 Game moinho = new Game();
                 moinho.setVisible(true);
+                moinho.addAgent(new FabioAgente());
                 moinho.addAgent(new AgenteAlfa());
             }
         });

@@ -6,7 +6,6 @@ import avaliacao.AvaliaPeloNumeroDePecas;
 import avaliacao.Folha;
 import avaliacao.FuncaoAvaliacao;
 import avaliacao.PesoFolhaColocacaoPeca;
-import trabalhominmax.TrabalhoMinmax;
 
 public class AgenteAlfa implements PlayerAgent {
     
@@ -36,11 +35,6 @@ public class AgenteAlfa implements PlayerAgent {
             }
         };
 
-        try {
-            Thread.sleep(TrabalhoMinmax.DELAY_ENTRE_CADA_JOGADA);
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
-        }
 
         return tree.executeMinimax();
     }
@@ -60,11 +54,6 @@ public class AgenteAlfa implements PlayerAgent {
             }
         };
 
-        try {
-            Thread.sleep(TrabalhoMinmax.DELAY_ENTRE_CADA_JOGADA);
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
-        }
 
         return tree.executeMinimax();
     }
@@ -79,11 +68,7 @@ public class AgenteAlfa implements PlayerAgent {
             }
         };
 
-        try {
-            Thread.sleep(TrabalhoMinmax.DELAY_ENTRE_CADA_JOGADA);
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
-        }
+
         return tree.executeMinimax();
     }
 
